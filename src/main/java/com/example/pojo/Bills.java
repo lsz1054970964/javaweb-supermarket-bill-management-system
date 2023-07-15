@@ -1,5 +1,7 @@
 package com.example.pojo;
 
+import java.sql.Date;
+
 public class Bills {
     private int id;
     private String billCode;
@@ -10,18 +12,20 @@ public class Bills {
     private float totalPrice;
     private int isPayment;
     private int createdBy;
-    private String creationDate;
+    private Date creationDate;
     private int modifyBy;
-    private String modifyDate;
+    private Date modifyDate;
     private int providerId;
+
+    private String providerName;
 
     public Bills() {
 
     }
 
     public Bills (int id, String billCode, String productName, String productDesc, String productUnit,
-                 float productCount, float totalPrice, int isPayment, int createdBy, String creationDate,
-                 int modifyBy, String modifyDate, int providerId) {
+                 float productCount, float totalPrice, int isPayment, int createdBy, Date creationDate,
+                 int modifyBy, Date modifyDate, int providerId, String providerName) {
         this.id = id;
         this.billCode = billCode;
         this.productName = productName;
@@ -35,7 +39,15 @@ public class Bills {
         this.modifyBy = modifyBy;
         this.modifyDate = modifyDate;
         this.providerId = providerId;
+        this.providerName = providerName;
+    }
 
+    public void setProviderName(String providerName) {
+        this.providerName = providerName;
+    }
+
+    public String getProviderName() {
+        return providerName;
     }
 
     public void setId(int id) {
@@ -109,11 +121,11 @@ public class Bills {
         return createdBy;
     }
 
-    public void setCreationDate(String creationDate) {
+    public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
     }
 
-    public String getCreationDate() {
+    public Date getCreationDate() {
         return creationDate;
     }
 
@@ -125,11 +137,11 @@ public class Bills {
         return modifyBy;
     }
 
-    public void setModifyDate(String modifyDate) {
+    public void setModifyDate(Date modifyDate) {
         this.modifyDate = modifyDate;
     }
 
-    public String getModifyDate() {
+    public Date getModifyDate() {
         return modifyDate;
     }
 

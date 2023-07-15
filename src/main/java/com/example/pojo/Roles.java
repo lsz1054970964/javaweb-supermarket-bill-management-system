@@ -1,20 +1,22 @@
 package com.example.pojo;
 
+import java.sql.Date;
+
 public class Roles {
     private int id;
     private String roleCode;
     private String roleName;
     private int createdBy;
-    private String creationDate;
+    private Date creationDate;
     private int modifyBy;
-    private String modifyDate;
+    private Date modifyDate;
 
     public Roles() {
 
     }
 
-    public Roles(int id, String roleCode, String roleName, int createdBy, String creationDate, int modifyBy,
-                String modifyDate){
+    public Roles(int id, String roleCode, String roleName, int createdBy, Date creationDate, int modifyBy,
+                Date modifyDate){
         this.id = id;
         this.roleCode = roleCode;
         this.roleName = roleName;
@@ -56,11 +58,11 @@ public class Roles {
         return createdBy;
     }
 
-    public void setCreationDate(String creationDate) {
+    public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
     }
 
-    public String getCreationDate() {
+    public Date getCreationDate() {
         return creationDate;
     }
 
@@ -72,11 +74,11 @@ public class Roles {
         return modifyBy;
     }
 
-    public void setModifyDate(String modifyDate) {
+    public void setModifyDate(Date modifyDate) {
         this.modifyDate = modifyDate;
     }
 
-    public String getModifyDate() {
+    public Date getModifyDate() {
         return modifyDate;
     }
 

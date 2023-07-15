@@ -1,25 +1,29 @@
 package com.example.pojo;
 
+import java.sql.Date;
+
 public class Users {
     private int id;
     private String userCode;
     private String userName;
     private String userPassword;
     private String gender;
-    private String birthday;
+    private Date birthday;
     private String phone;
     private String address;
     private String userRole;
     private int createdBy;
-    private String creationDate;
+    private Date creationDate;
     private int modifyBy;
-    private String modifyDate;
+    private Date modifyDate;
+
+    private String userRoleName;
 
     public Users() {}
 
     public Users (int id, String userCode, String userName, String userPassword, String gender,
-                  String birthday, String phone,String address, String userRole, int createdBy,
-                  String creationDate, int modifyBy, String modifyDate) {
+                  Date birthday, String phone,String address, String userRole, int createdBy,
+                  Date creationDate, int modifyBy, Date modifyDate, String userRoleName) {
         this.id = id;
         this.userCode = userCode;
         this.userName = userName;
@@ -33,6 +37,15 @@ public class Users {
         this.creationDate = creationDate;
         this.modifyBy = modifyBy;
         this.modifyDate = modifyDate;
+        this.userRoleName = userRoleName
+    }
+
+    public void setUserRoleName(String userRoleName) {
+        this.userRoleName = userRoleName;
+    }
+
+    public String getUserRoleName() {
+        return userRoleName;
     }
 
     public void setId(int id) {
@@ -75,11 +88,11 @@ public class Users {
         return gender;
     }
 
-    public void setBirthday(String birthday) {
+    public void setBirthday(Date birthday) {
         this.birthday = birthday;
     }
 
-    public String getBirthday() {
+    public Date getBirthday() {
         return birthday;
     }
 
@@ -115,11 +128,11 @@ public class Users {
         return createdBy;
     }
 
-    public void setCreationDate(String creationDate) {
+    public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
     }
 
-    public String getCreationDate() {
+    public Date getCreationDate() {
         return creationDate;
     }
 
@@ -131,11 +144,11 @@ public class Users {
         return modifyBy;
     }
 
-    public void setModifyDate(String modifyDate) {
+    public void setModifyDate(Date modifyDate) {
         this.modifyDate = modifyDate;
     }
 
-    public String getModifyDate() {
+    public Date getModifyDate() {
         return modifyDate;
     }
 

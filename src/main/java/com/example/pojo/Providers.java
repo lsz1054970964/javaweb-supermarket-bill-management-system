@@ -1,5 +1,7 @@
 package com.example.pojo;
 
+import java.sql.Date;
+
 public class Providers {
     private int id;
     private String proCode;
@@ -10,17 +12,17 @@ public class Providers {
     private String proAddress;
     private String proFax;
     private int createdBy;
-    private String creationDate;
+    private Date creationDate;
     private int modifyBy;
-    private String modifyDate;
+    private Date modifyDate;
 
     public Providers() {
 
     }
 
     public Providers(int id, String proCode, String proName, String proDesc, String proContact,
-                    String proPhone, String proAddress, String proFax, int createdBy, String creationDate,
-                    int modifyBy, String modifyDate) {
+                    String proPhone, String proAddress, String proFax, int createdBy, Date creationDate,
+                    int modifyBy, Date modifyDate) {
         this.id = id;
         this.proCode = proCode;
         this.proName = proName;
@@ -108,11 +110,11 @@ public class Providers {
         return createdBy;
     }
 
-    public void setCreationDate(String creationDate) {
+    public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
     }
 
-    public String getCreationDate() {
+    public Date getCreationDate() {
         return creationDate;
     }
 
@@ -124,11 +126,11 @@ public class Providers {
         return modifyBy;
     }
 
-    public void setModifyDate(String modifyDate) {
+    public void setModifyDate(Date modifyDate) {
         this.modifyDate = modifyDate;
     }
 
-    public String getModifyDate() {
+    public Date getModifyDate() {
         return modifyDate;
     }
 
