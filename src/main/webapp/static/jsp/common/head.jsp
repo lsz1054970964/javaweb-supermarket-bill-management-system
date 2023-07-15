@@ -1,48 +1,38 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Administrator
-  Date: 2021/1/27
-  Time: 19:57
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-    <title>超市订单管理系统</title>
-    <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css" />
-    <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/css/public.css" />
+    <title>Smbms</title>
+    <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css" />
+    <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/static/css/public.css" />
 </head>
 <body>
-<!--头部-->
+<!--Header-->
 <header class="publicHeader">
-    <h1>超市订单管理系统</h1>
+    <h1>Supermarket Bill Management System</h1>
     <div class="publicHeaderR">
-        <p><span>下午好！</span><span style="color: #fff21b">${userSession.userName}</span> , 欢迎你！</p>
-        <a href="${pageContext.request.contextPath }/logout.do">退出</a>
+        <p><span>Hello </span><span style="color: #fff21b">${userSession.userCode}</span>, Welcome！</p>
+        <a href="${pageContext.request.contextPath }/logout.do">Exit</a>
     </div>
 </header>
-<!--时间-->
+<!--Time-->
 <section class="publicTime">
-    <span id="time">2015年1月1日 11:11  星期一</span>
-    <a href="#">温馨提示：为了能正常浏览，请使用高版本浏览器！（IE10+）</a>
+    <span id="time">2023-01-01 11:11  Monday</span>
+    <a href="#">Reminder： In order to browse normally, please use a higher version browser！</a>
 </section>
-<!--主体内容-->
+<!--main-->
 <section class="publicMian ">
     <div class="left">
-        <h2 class="leftH2"><span class="span1"></span>功能列表 <span></span></h2>
+        <h2 class="leftH2"><span class="span1"></span>Functions <span></span></h2>
         <nav>
             <ul class="list">
-                <li><a href="${pageContext.request.contextPath }/jsp/bill.do?method=query">订单管理</a></li>
-                <li><a href="${pageContext.request.contextPath }/jsp/provider.do?method=query">供应商管理</a></li>
-                <li><a href="${pageContext.request.contextPath }/jsp/user.do?method=query">用户管理</a></li>
-                <li><a href="${pageContext.request.contextPath }/jsp/pwdmodify.jsp">密码修改</a></li>
-                <li><a href="${pageContext.request.contextPath }/logout.do">退出系统</a></li>
+                <li><a href="${pageContext.request.contextPath }/static/jsp/bill.do?method=query">Bills</a></li>
+                <li><a href="${pageContext.request.contextPath }/static/jsp/provider.do?method=query">Providers</a></li>
+                <li><a href="${pageContext.request.contextPath }/static/jsp/user.do?method=query">Users</a></li>
+                <li><a href="${pageContext.request.contextPath }/static/jsp/pwdmodify.jsp">Password Revision</a></li>
+                <li><a href="${pageContext.request.contextPath }/static/logout.do">Exit the System</a></li>
             </ul>
         </nav>
     </div>
     <input type="hidden" id="path" name="path" value="${pageContext.request.contextPath }"/>
     <input type="hidden" id="referer" name="referer" value="<%=request.getHeader("Referer")%>"/>
-

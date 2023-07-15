@@ -37,7 +37,7 @@ public class Users {
         this.creationDate = creationDate;
         this.modifyBy = modifyBy;
         this.modifyDate = modifyDate;
-        this.userRoleName = userRoleName
+        this.userRoleName = userRoleName;
     }
 
     public void setUserRoleName(String userRoleName) {
