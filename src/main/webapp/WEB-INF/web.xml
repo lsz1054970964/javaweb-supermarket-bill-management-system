@@ -10,7 +10,8 @@
     <welcome-file-list>
         <welcome-file>/login.jsp</welcome-file>
     </welcome-file-list>
-    
+
+    // Login
     <servlet>
         <servlet-name>login</servlet-name>
         <servlet-class>com.example.servlet.user.LoginServlet</servlet-class>
@@ -20,4 +21,22 @@
         <url-pattern>/login.do</url-pattern>
     </servlet-mapping>
 
+    // Logout
+    <servlet>
+        <servlet-name>logout</servlet-name>
+        <servlet-class>com.example.servlet.user.LogoutServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>logout</servlet-name>
+        <url-pattern>/static/js/logout.do</url-pattern>
+    </servlet-mapping>
+
+    <filter>
+        <filter-name>loginFilter</filter-name>
+        <filter-class>com.example.filter.LoginFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>loginFilter</filter-name>
+        <url-pattern>/static/jsp/*</url-pattern>
+    </filter-mapping>
 </web-app>

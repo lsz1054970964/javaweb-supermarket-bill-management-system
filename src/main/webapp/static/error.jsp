@@ -21,9 +21,6 @@ body {
 } */
 </style>
 <body>
-	<!-- 使用输出全局异常信息-->
-	<%-- <h1>全局异常信息：${exception.message}</h1> --%>
-	<%-- 用来使用局部输出 <h1>${e}</h1> --%>
-	<a href="${pageContext.request.contextPath }/login.jsp">返回</a>
+	<a href="../login.jsp">return to the login page</a>
 </body>
 </html>

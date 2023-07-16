@@ -12,7 +12,7 @@
     <h1>Supermarket Bill Management System</h1>
     <div class="publicHeaderR">
         <p><span>Hello </span><span style="color: #fff21b">${userSession.userCode}</span>, Welcome！</p>
-        <a href="${pageContext.request.contextPath }/logout.do">Exit</a>
+        <a href="${pageContext.request.contextPath }/static/js/logout.do">Exit</a>
     </div>
 </header>
 <!--Time-->
@@ -30,7 +30,7 @@
                 <li><a href="${pageContext.request.contextPath }/static/jsp/provider.do?method=query">Providers</a></li>
                 <li><a href="${pageContext.request.contextPath }/static/jsp/user.do?method=query">Users</a></li>
                 <li><a href="${pageContext.request.contextPath }/static/jsp/pwdmodify.jsp">Password Revision</a></li>
-                <li><a href="${pageContext.request.contextPath }/static/logout.do">Exit the System</a></li>
+                <li><a href="${pageContext.request.contextPath }/static/js/logout.do">Exit the System</a></li>
             </ul>
         </nav>
     </div>
