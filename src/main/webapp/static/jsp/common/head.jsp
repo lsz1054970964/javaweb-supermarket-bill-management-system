@@ -34,5 +34,5 @@
             </ul>
         </nav>
     </div>
-    <input type="hidden" id="path" name="path" value="${pageContext.request.contextPath }"/>
+    <input type="hidden" id="path" name="path" value="${pageContext.request.contextPath }/static"/>
     <input type="hidden" id="referer" name="referer" value="<%=request.getHeader("Referer")%>"/>

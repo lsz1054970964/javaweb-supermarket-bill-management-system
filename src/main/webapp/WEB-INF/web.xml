@@ -31,6 +31,16 @@
         <url-pattern>/static/js/logout.do</url-pattern>
     </servlet-mapping>
 
+    // Update
+    <servlet>
+        <servlet-name>user</servlet-name>
+        <servlet-class>com.example.servlet.user.UserServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>user</servlet-name>
+        <url-pattern>/static/jsp/user.do</url-pattern>
+    </servlet-mapping>
+
     <filter>
         <filter-name>loginFilter</filter-name>
         <filter-class>com.example.filter.LoginFilter</filter-class>
@@ -39,4 +49,9 @@
         <filter-name>loginFilter</filter-name>
         <url-pattern>/static/jsp/*</url-pattern>
     </filter-mapping>
+
+
+    <session-config>
+        <session-timeout>60</session-timeout>
+    </session-config>
 </web-app>

@@ -57,7 +57,7 @@ public class BaseDao {
 
         for (int i = 0; i < params.length; i++) {
             // setObject starts from 1 but Object[] starts from 0
-            preparedStatement.setObject(i+1, params);
+            preparedStatement.setObject(i+1, params[i]);
         }
 
         int n = preparedStatement.executeUpdate();
