@@ -2,11 +2,11 @@ package com.example.dao.user;
 
 import com.example.dao.BaseDao;
 import com.example.pojo.Users;
+import com.mysql.cj.util.StringUtils;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserDaoImpl implements UserDao {
     // Get login user
@@ -63,8 +63,98 @@ public class UserDaoImpl implements UserDao {
             BaseDao.close(null, preparedStatement,null);
         }
 
-
-
         return execute;
+    }
+
+    @Override
+    public int getUserCount(Connection connection, String userName, int userRole) throws Exception {
+
+        PreparedStatement preparedStatement = null;
+        ResultSet rs = null;
+        int cnt = 0;
+
+        if(connection != null){
+
+            StringBuffer sql = new StringBuffer();
+            sql.append("select count(1) as count from `smbms_user` u join `smbms_role` r where u.userRole = r.id");
+            ArrayList<Object> list = new ArrayList<Object>();
+
+            if(!StringUtils.isNullOrEmpty(userName)){
+                sql.append(" and u.userName like ?");
+                list.add("%"+userName+"%");
+            }
+
+            if(userRole > 0){
+                sql.append(" and r.id = ?");
+                list.add(userRole);
+            }
+
+            Object[] params = list.toArray();
+
+            rs = BaseDao.execute(connection, preparedStatement, sql.toString(), params ,rs);
+
+            if(rs.next()){
+                cnt = rs.getInt("count");
+            }
+
+            BaseDao.close(null, preparedStatement, rs);
+        }
+
+        return cnt;
+    }
+
+    @Override
+    public List<Users> getUserList(Connection connection, String userName, int userRole, int currentPageNo, int pageSize) throws Exception {
+        PreparedStatement preparedStatement = null;
+        ResultSet rs = null;
+        List<Users> usersList = new ArrayList<Users>();
+
+        if(connection != null){
+            StringBuffer sql = new StringBuffer();
+            sql.append("select * from `smbms_user` u join `smbms_role` r where u.userRole = r.id");
+            ArrayList<Object> list = new ArrayList<Object>();
+
+            if(!StringUtils.isNullOrEmpty(userName)){
+                sql.append(" and u.userName like ?");
+                list.add("%"+userName+"%");
+            }
+
+            if(userRole > 0){
+                sql.append(" and r.id = ?");
+                list.add(userRole);
+            }
+
+            int startIndex = (currentPageNo - 1) * pageSize;
+            sql.append(" limit ?, ?");
+            list.add(startIndex);
+            list.add(pageSize);
+
+            Object[] params = list.toArray();
+
+            rs = BaseDao.execute(connection, preparedStatement, sql.toString(),params, rs);
+
+            while(rs.next()){
+                Users user = new Users();
+                user.setId(rs.getInt("id"));
+                user.setUserCode(rs.getString("userCode"));
+                user.setUserCode(rs.getString("userName"));
+                user.setUserPassword(rs.getString("userPassword"));
+                user.setGender(rs.getString("gender"));
+                user.setBirthday(rs.getDate("birthday"));
+                user.setPhone(rs.getString("phone"));
+                user.setAddress(rs.getString("address"));
+                user.setUserRole(rs.getString("userRole"));
+                user.setCreatedBy(rs.getInt("createdBy"));
+                user.setCreationDate(rs.getDate("creationDate"));
+                user.setModifyBy(rs.getInt("modifyBy"));
+                user.setModifyDate(rs.getDate("modifyDate"));
+
+                usersList.add(user);
+            }
+
+            BaseDao.close(null, preparedStatement, rs);
+        }
+
+        return usersList;
     }
 }

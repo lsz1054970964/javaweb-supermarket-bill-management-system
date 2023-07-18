@@ -40,11 +40,14 @@ public class BaseDao {
     public static ResultSet execute(Connection connection, PreparedStatement preparedStatement, String sql, Object[] params, ResultSet resultSet) throws Exception {
         preparedStatement = connection.prepareStatement(sql);
 
+//        System.out.println("BaseDao -> execute "+preparedStatement);
+
         for (int i = 0; i < params.length; i++) {
             // setObject starts from 1 but Object[] starts from 0
             preparedStatement.setObject(i+1, params[i]);
         }
 
+//        System.out.println("BaseDao -> execute "+preparedStatement);
         resultSet = preparedStatement.executeQuery();
 
 

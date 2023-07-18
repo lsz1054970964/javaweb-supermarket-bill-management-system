@@ -7,6 +7,8 @@ import com.example.pojo.Users;
 import org.junit.Test;
 
 import java.sql.Connection;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class UserServiceImpl implements UserService{
@@ -53,12 +55,47 @@ public class UserServiceImpl implements UserService{
         return flag;
     }
 
+    @Override
+    public int getUserCount(String userName, int userRole) {
+        Connection connection = null;
+        int cnt = 0;
+
+        try {
+            connection = BaseDao.getConnection();
+            cnt = userDao.getUserCount(connection, userName, userRole);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            BaseDao.close(connection, null, null);
+        }
+
+        return cnt;
+    }
+
+    @Override
+    public List<Users> getUserList(String userName, int userRole, int currentPageNo, int pageSize) {
+        Connection connection = null;
+        List<Users> usersList = new ArrayList<Users>();
+
+        try {
+            connection = BaseDao.getConnection();
+            usersList = userDao.getUserList(connection, userName, userRole, currentPageNo, pageSize);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            BaseDao.close(connection, null, null);
+        }
+
+        return usersList;
+    }
+
     @Test
     public void test(){
         UserServiceImpl userService = new UserServiceImpl();
-//        String address = userService.login("test","123").getAddress();
-//        System.out.println(address);
-        boolean flag = userService.updatePassword(1,"12345678");
-        System.out.println(flag);
+        List<Users> usersList  = userService.getUserList(null,0, 1,5);
+        for (int i = 0; i < usersList.size(); i++) {
+            System.out.println(usersList.get(i));
+        }
+
     }
 }
