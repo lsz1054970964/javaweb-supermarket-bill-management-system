@@ -1,5 +1,6 @@
 package com.example.dao.user;
 
+import com.example.pojo.Roles;
 import com.example.pojo.Users;
 
 import java.sql.Connection;
@@ -19,4 +20,5 @@ public interface UserDao {
     // Get user list
     public List<Users> getUserList(Connection connection, String userName, int userRole, int currentPageNo, int pageSize) throws Exception;
 
-}
+
+ }

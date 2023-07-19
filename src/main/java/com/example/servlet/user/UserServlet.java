@@ -1,10 +1,14 @@
 package com.example.servlet.user;
 
 import com.alibaba.fastjson2.JSONArray;
+import com.example.pojo.Roles;
 import com.example.pojo.Users;
+import com.example.service.role.RoleService;
+import com.example.service.role.RoleServiceImpl;
 import com.example.service.user.UserService;
 import com.example.service.user.UserServiceImpl;
 import com.example.util.Constant;
+import com.example.util.PageSupport;
 import com.mysql.cj.util.StringUtils;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -14,16 +18,19 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class UserServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String method = req.getParameter("method");
-        if(method.equals("savepwd") && method!=null){
+        if(method.equals("savepwd") ){
             this.updatePassword(req,resp);
-        } else if (method.equals("pwdmodify") && method!=null) {
+        } else if (method.equals("pwdmodify") ) {
             this.verifyPassword(req,resp);
+        } else if(method.equals("query")) {
+            this.checkUser(req,resp);
         }
     }
 
@@ -97,5 +104,73 @@ public class UserServlet extends HttpServlet {
         }
     }
 
+    //
+    public void checkUser(HttpServletRequest request, HttpServletResponse response){
+
+        // Get parameters from the front end
+        String queryName = request.getParameter("queryname");
+        String queryUserRole = request.getParameter("queryUserRole");
+        String queryUserPage = request.getParameter("pageIndex");
+
+        // Default role
+        int queryRole = 0;
+
+        // Get userList
+        UserServiceImpl userService = new UserServiceImpl();
+        //Default page index and size
+        int queryPage = 1;
+        int querySize = 5;
+
+        if(queryName == null){
+            queryName = "";
+        }
+
+        if(queryUserRole!=null && !queryUserRole.equals("")){
+            queryRole = Integer.parseInt(queryUserRole);
+        }
+
+        if(queryUserPage != null){
+            queryPage = Integer.parseInt(queryUserPage);
+        }
+
+        // Get user count
+        int totalCount = userService.getUserCount(queryName, queryRole);
+        // Total page count
+        PageSupport pageSupport = new PageSupport();
+        pageSupport.setPageSize(querySize);
+        pageSupport.setCurrentPageNo(queryPage);
+        pageSupport.setTotalCount(totalCount);
+
+        int totalPageCount = pageSupport.getTotalPageCount();
+
+        // For first and last pages
+        if(queryPage < 1){
+            queryPage = 1;
+        } else if (queryPage > totalPageCount) {
+            queryPage = totalPageCount;
+        }
+
+        // Get user list and put it to front end
+        List<Users> usersList = userService.getUserList(queryName, queryRole, queryPage, querySize);
+        request.setAttribute("userList", usersList);
+
+        // Get role list and put it to front end
+        RoleServiceImpl roleService = new RoleServiceImpl();
+        List<Roles> rolesList = roleService.getRoleList();
+        request.setAttribute("roleList", rolesList);
+
+        // Put parameters to front end
+        request.setAttribute("totalCount", totalCount);
+        request.setAttribute("currentPageNo", queryPage);
+        request.setAttribute("totalPageCount", totalPageCount);
+
+        try {
+            request.getRequestDispatcher("/static/jsp/userlist.jsp").forward(request,response);
+        } catch (ServletException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 }

@@ -72,6 +72,11 @@
       <artifactId>fastjson2</artifactId>
       <version>2.0.35</version>
     </dependency>
+    <dependency>
+      <groupId>org.glassfish.web</groupId>
+      <artifactId>jakarta.servlet.jsp.jstl</artifactId>
+      <version>2.0.0</version>
+    </dependency>
   </dependencies>
   <build>
     <finalName>javaweb-supermarket-bill-management-system</finalName>

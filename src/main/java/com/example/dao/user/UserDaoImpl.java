@@ -1,6 +1,7 @@
 package com.example.dao.user;
 
 import com.example.dao.BaseDao;
+import com.example.pojo.Roles;
 import com.example.pojo.Users;
 import com.mysql.cj.util.StringUtils;
 
@@ -143,11 +144,8 @@ public class UserDaoImpl implements UserDao {
                 user.setBirthday(rs.getDate("birthday"));
                 user.setPhone(rs.getString("phone"));
                 user.setAddress(rs.getString("address"));
-                user.setUserRole(rs.getString("userRole"));
-                user.setCreatedBy(rs.getInt("createdBy"));
-                user.setCreationDate(rs.getDate("creationDate"));
-                user.setModifyBy(rs.getInt("modifyBy"));
-                user.setModifyDate(rs.getDate("modifyDate"));
+                //user.setUserRole(rs.getString("userRole"));
+                user.setUserRole(rs.getString("roleName"));
 
                 usersList.add(user);
             }
@@ -157,4 +155,5 @@ public class UserDaoImpl implements UserDao {
 
         return usersList;
     }
+
 }

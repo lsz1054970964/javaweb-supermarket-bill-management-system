@@ -1,5 +1,6 @@
 package com.example.service.user;
 
+import com.example.pojo.Roles;
 import com.example.pojo.Users;
 
 import java.util.List;
@@ -16,4 +17,6 @@ public interface UserService {
 
     // Get user list
     public List<Users> getUserList(String userName, int userRole, int currentPageNo, int pageSize);
+
+
 }
