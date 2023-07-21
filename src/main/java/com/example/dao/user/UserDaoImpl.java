@@ -47,8 +47,6 @@ public class UserDaoImpl implements UserDao {
     }
 
     // Revise password
-
-
     @Override
     public int updatePassword(Connection connection, int id, String password) throws Exception {
 
@@ -156,4 +154,22 @@ public class UserDaoImpl implements UserDao {
         return usersList;
     }
 
+    @Override
+    public int addUser(Connection connection, Users user) throws Exception {
+
+        PreparedStatement preparedStatement = null;
+        int execute = 0;
+
+        if(connection != null){
+            String sql = "insert into `smbms_user` (userCode, userName, userPassword, gender, birthday, " +
+                    "phone, address, userRole, createdBy, creationDate) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            Object[] params = {user.getUserCode(), user.getUserName(), user.getUserPassword(), user.getGender()
+                    , user.getBirthday(), user.getPhone(), user.getAddress(), user.getCreatedBy()
+                    , user.getCreationDate()};
+
+            execute = BaseDao.execute(connection, preparedStatement, sql, params);
+        }
+        BaseDao.close(null, preparedStatement, null);
+        return execute;
+    }
 }

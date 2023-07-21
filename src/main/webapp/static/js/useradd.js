@@ -52,7 +52,7 @@ $(function(){
 	
 	
 	
-
+	// Check whether user exists or not
 	userCode.bind("blur",function(){
 
 		$.ajax({
@@ -160,7 +160,7 @@ $(function(){
 		}else if(userRole.attr("validateStatus") != "true"){
 			userRole.blur();
 		}else{
-			if(confirm("是否确认提交数据")){
+			if(confirm("Are you sure to submit?")){
 				$("#userForm").submit();
 			}
 		}

@@ -18,5 +18,9 @@ public interface UserService {
     // Get user list
     public List<Users> getUserList(String userName, int userRole, int currentPageNo, int pageSize);
 
+    // Add user
+    public boolean addUser(Users user);
 
+    // Check whether user exists or not
+    public Users login(String userCode);
 }

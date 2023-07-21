@@ -20,5 +20,8 @@ public interface UserDao {
     // Get user list
     public List<Users> getUserList(Connection connection, String userName, int userRole, int currentPageNo, int pageSize) throws Exception;
 
+    // Add user
+    public int addUser(Connection connection, Users user) throws Exception;
+
 
  }

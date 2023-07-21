@@ -7,6 +7,7 @@ import com.example.pojo.Users;
 import org.junit.Test;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -89,6 +90,50 @@ public class UserServiceImpl implements UserService{
         return usersList;
     }
 
+    @Override
+    public boolean addUser(Users user) {
+
+        boolean flag = false;
+        Connection connection = null;
+        int execute = 0;
+
+        try {
+            connection = BaseDao.getConnection();
+            connection.setAutoCommit(false);
+            execute = userDao.addUser(connection, user);
+            connection.commit();
+            if( execute > 0){
+                flag = true;
+            }
+        } catch (Exception e) {
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
+        } finally {
+            BaseDao.close(connection, null, null);
+        }
+
+        return flag;
+    }
+
+    @Override
+    public Users login(String userCode) {
+        Connection connection = null;
+        Users user =  null;
+
+        try {
+            connection = BaseDao.getConnection();
+            user = userDao.getLoginUser(connection, userCode);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            BaseDao.close(connection, null, null);
+        }
+
+        return user;
+    }
 
     @Test
     public void test(){

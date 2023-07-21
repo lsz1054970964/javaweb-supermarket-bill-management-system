@@ -3,7 +3,6 @@ package com.example.servlet.user;
 import com.alibaba.fastjson2.JSONArray;
 import com.example.pojo.Roles;
 import com.example.pojo.Users;
-import com.example.service.role.RoleService;
 import com.example.service.role.RoleServiceImpl;
 import com.example.service.user.UserService;
 import com.example.service.user.UserServiceImpl;
@@ -14,9 +13,14 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.junit.Test;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +35,10 @@ public class UserServlet extends HttpServlet {
             this.verifyPassword(req,resp);
         } else if(method.equals("query")) {
             this.checkUser(req,resp);
+        } else if(method.equals("add")){
+            this.addUser(req,resp);
+        } else if (method.equals("ucexist")) {
+            this.verifyUser(req, resp);
         }
     }
 
@@ -104,7 +112,7 @@ public class UserServlet extends HttpServlet {
         }
     }
 
-    //
+    // Load user list
     public void checkUser(HttpServletRequest request, HttpServletResponse response){
 
         // Get parameters from the front end
@@ -172,5 +180,75 @@ public class UserServlet extends HttpServlet {
             throw new RuntimeException(e);
         }
     }
+
+    // Add user
+    public void addUser(HttpServletRequest request, HttpServletResponse response){
+
+        Users _user = new Users();
+        _user.setUserCode(request.getParameter("userCode"));
+        _user.setUserName(request.getParameter("userName"));
+        _user.setUserPassword(request.getParameter("userPassword"));
+        _user.setGender(request.getParameter("gender"));
+        _user.setBirthday(Date.valueOf(request.getParameter("birthday")));
+        _user.setPhone(request.getParameter("phone"));
+        _user.setAddress(request.getParameter("address"));
+        _user.setUserRole(request.getParameter("userRole"));
+        Users user = (Users) (request.getSession().getAttribute(Constant.userSession));
+        _user.setCreatedBy(Integer.parseInt(user.getUserCode()));
+        _user.setCreationDate(new Date(System.currentTimeMillis()));
+
+        boolean flag =  false;
+
+        UserServiceImpl userService = new UserServiceImpl();
+        flag = userService.addUser(_user);
+
+        if(flag){
+            try {
+                response.sendRedirect(request.getContextPath() + "/static/jsp/user.do?method=query");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            try {
+                response.sendRedirect(request.getContextPath() + "/static/jsp/adduser.jsp");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    // Check whether user has exists in the system or not
+    public void verifyUser(HttpServletRequest request, HttpServletResponse response){
+
+        String userCode = request.getParameter("userCode");
+        Map<String, String> map = new HashMap<>();
+
+        if(StringUtils.isNullOrEmpty(userCode)){
+            map.put("userCode", "exist");
+        } else {
+
+            // Find user based on inputted userCode
+            UserServiceImpl userService =  new UserServiceImpl();
+            Users user = userService.login(userCode);
+
+            if(user != null){
+                map.put("userCode", "exist");
+            } else {
+                map.put("userCode", "notexist");
+            }
+        }
+
+        response.setContentType("application/json");
+        try {
+            PrintWriter writer = response.getWriter();
+            writer.write(JSONArray.toJSONString(map));
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
 
 }
