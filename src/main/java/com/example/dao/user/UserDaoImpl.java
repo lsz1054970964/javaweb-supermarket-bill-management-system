@@ -191,4 +191,37 @@ public class UserDaoImpl implements UserDao {
         return execute;
     }
 
+    @Override
+    public int updateUser(Connection connection, Users user) throws Exception {
+
+        PreparedStatement preparedStatement = null;
+        int execute = 0;
+
+        if(connection != null){
+            String sql = "update `smbms_user` set userCode = ?, userName = ?, userPassword = ?, " +
+                    "gender = ?, birthday = ?, phone = ?, address = ?, userRole = ?, " +
+                    "modifyBy = ?, modifyDate = ? where id = ?";
+
+            String userCode = user.getUserCode();
+            String userName = user.getUserName();
+            String userPassword = user.getUserPassword();
+            String gender = user.getGender();
+            Date birthday = user.getBirthday();
+            String phone = user.getPhone();
+            String address = user.getAddress();
+            String userRole = user.getUserRole();
+            int modifyBy = user.getModifyBy();
+            Date modifyDate = user.getModifyDate();
+            int id = user.getId();
+
+            Object[] params = {userCode, userName, userPassword, gender, birthday, phone,
+                    address, userRole, modifyBy, modifyDate, id};
+
+            execute = BaseDao.execute(connection, preparedStatement, sql, params);
+        }
+
+        BaseDao.close(null, preparedStatement, null);
+
+        return execute;
+    }
 }

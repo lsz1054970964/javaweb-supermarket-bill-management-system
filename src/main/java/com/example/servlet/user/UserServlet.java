@@ -18,9 +18,6 @@ import org.junit.Test;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,6 +38,8 @@ public class UserServlet extends HttpServlet {
             this.verifyUser(req, resp);
         } else if (method.equals("deluser")){
             this.deleteUser(req, resp);
+        } else if (method.equals("modifyexe")){
+            this.updateUser(req, resp);
         }
     }
 
@@ -288,6 +287,58 @@ public class UserServlet extends HttpServlet {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+    }
+
+    // Update user
+    public void updateUser(HttpServletRequest request, HttpServletResponse response){
+
+        String id = request.getParameter("uid");
+        String userCode = request.getParameter("userCode");
+        String userName = request.getParameter("userName");
+        String userPassword = request.getParameter("userPassword");
+        String gender = request.getParameter("gender");
+        Date birthday = Date.valueOf(request.getParameter("birthday"));
+        String phone = request.getParameter("phone");
+        String address = request.getParameter("address");
+        String userRole = request.getParameter("userRole");
+        int modifyBy = ((Users) request.getSession().getAttribute(Constant.userSession)).getId();
+        Date modifyDate = new Date(System.currentTimeMillis());
+
+        UserServiceImpl userService = new UserServiceImpl();
+
+        Users _user = new Users();
+        _user.setId(Integer.parseInt(id));
+        _user.setUserCode(userCode);
+        _user.setUserName(userName);
+        _user.setUserPassword(userPassword);
+        _user.setGender(gender);
+        _user.setBirthday(birthday);
+        _user.setPhone(phone);
+        _user.setAddress(address);
+        _user.setUserRole(userRole);
+        _user.setModifyBy(modifyBy);
+        _user.setModifyDate(modifyDate);
+
+        boolean flag = userService.updateUser(_user);
+
+        if(flag){
+            try {
+                response.sendRedirect(request.getContextPath()+"/static/jsp/user.do?method=query");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            try {
+                request.getRequestDispatcher("usermodify.jsp").forward(request,response);
+            } catch (ServletException e) {
+                throw new RuntimeException(e);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+
 
     }
 }

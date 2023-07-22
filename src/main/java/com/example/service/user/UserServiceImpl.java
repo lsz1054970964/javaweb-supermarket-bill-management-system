@@ -157,9 +157,35 @@ public class UserServiceImpl implements UserService{
             } catch (SQLException ex) {
                 throw new RuntimeException(ex);
             }
+        } finally {
+            BaseDao.close(connection, null,null);
         }
 
-        BaseDao.close(connection, null,null);
+        return flag;
+    }
+
+    @Override
+    public boolean updateUser(Users user) {
+
+        boolean flag = false;
+        Connection connection = null;
+        int execute = 0;
+
+        try {
+            connection = BaseDao.getConnection();
+            connection.setAutoCommit(false);
+            execute = userDao.updateUser(connection, user);
+            connection.commit();
+
+            if(execute > 0) {
+                flag = true;
+            }
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            BaseDao.close(connection, null, null);
+        }
 
         return flag;
     }

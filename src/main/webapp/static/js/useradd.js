@@ -31,7 +31,7 @@ $(function(){
 	$.ajax({
 		type:"GET",
 		url:path+"/jsp/user.do",
-		data:{method:"getrolelist"},//请求参数
+		data:{method:"getrolelist"},
 		dataType:"json",
 		success:function(data){
 			if(data != null){
