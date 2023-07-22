@@ -224,4 +224,35 @@ public class UserDaoImpl implements UserDao {
 
         return execute;
     }
+
+    @Override
+    public Users viewUser(Connection connection, int id) throws Exception {
+
+        Users user = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet rs = null;
+
+        if(connection != null) {
+
+            String sql = "select * from `smbms_user` u join `smbms_role` r  where id = ?";
+            Object[] params = {id};
+
+            rs = BaseDao.execute(connection, preparedStatement, sql, params, rs);
+
+            if(rs.next()){
+                user.setUserCode(rs.getString("userCode"));
+                user.setUserCode(rs.getString("userName"));
+                user.setUserPassword(rs.getString("userPassword"));
+                user.setGender(rs.getString("gender"));
+                user.setBirthday(rs.getDate("birthday"));
+                user.setPhone(rs.getString("phone"));
+                user.setAddress(rs.getString("address"));
+                user.setUserRole(rs.getString("userRole"));
+            }
+        }
+
+        BaseDao.close(null, preparedStatement, rs);
+
+        return user;
+    }
 }

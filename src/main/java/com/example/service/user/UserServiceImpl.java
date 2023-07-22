@@ -190,6 +190,24 @@ public class UserServiceImpl implements UserService{
         return flag;
     }
 
+    @Override
+    public Users viewUser(int id) {
+
+        Connection connection = null;
+        Users user = null;
+
+        try {
+            connection= BaseDao.getConnection();
+            user = userDao.viewUser(connection, id);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            BaseDao.close(connection, null, null);
+        }
+
+        return user;
+    }
+
     @Test
     public void test(){
         UserServiceImpl userService = new UserServiceImpl();

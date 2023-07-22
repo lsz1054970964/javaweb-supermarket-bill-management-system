@@ -29,4 +29,7 @@ public interface UserService {
 
     // Update user
     public  boolean updateUser(Users user);
+
+    // View user
+    public Users viewUser(int id);
 }

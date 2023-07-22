@@ -28,4 +28,7 @@ public interface UserDao {
 
     // Update user
     public  int updateUser(Connection connection, Users user) throws Exception;
- }
+
+    // View user
+    public Users viewUser(Connection connection, int id) throws  Exception;
+}

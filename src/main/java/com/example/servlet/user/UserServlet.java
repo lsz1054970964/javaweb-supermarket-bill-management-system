@@ -40,6 +40,8 @@ public class UserServlet extends HttpServlet {
             this.deleteUser(req, resp);
         } else if (method.equals("modifyexe")){
             this.updateUser(req, resp);
+        } else if (method.equals("view")){
+            this.viewUser(req, resp);
         }
     }
 
@@ -340,5 +342,29 @@ public class UserServlet extends HttpServlet {
 
 
 
+    }
+
+    // View user
+    public void viewUser(HttpServletRequest request, HttpServletResponse response){
+
+        String uid = request.getParameter("uid");
+
+        if(!StringUtils.isNullOrEmpty(uid)){
+
+            int id = Integer.parseInt(uid);
+            UserServiceImpl userService = new UserServiceImpl();
+            Users user = userService.viewUser(id);
+
+            request.setAttribute("user",user);
+
+            try {
+                request.getRequestDispatcher("userview.jsp").forward(request, response);
+            } catch (ServletException e) {
+                throw new RuntimeException(e);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+        }
     }
 }
