@@ -101,7 +101,7 @@ $(function(){
 			&& phone.attr("validateStatus") == "true"
 			&& birthday.attr("validateStatus") == "true"
 			&& userRole.attr("validateStatus") == "true"){
-			if(confirm("是否确认要提交数据？")){
+			if(confirm("Are you sure to submit？")){
 				$("#userForm").submit();
 			}
 		}

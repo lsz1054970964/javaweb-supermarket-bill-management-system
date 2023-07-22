@@ -39,6 +39,8 @@ public class UserServlet extends HttpServlet {
             this.addUser(req,resp);
         } else if (method.equals("ucexist")) {
             this.verifyUser(req, resp);
+        } else if (method.equals("deluser")){
+            this.deleteUser(req, resp);
         }
     }
 
@@ -250,5 +252,42 @@ public class UserServlet extends HttpServlet {
 
     }
 
+    // Delete user
+    public void deleteUser(HttpServletRequest request, HttpServletResponse response){
+        String userid = request.getParameter("userid");
+        int id = 0;
 
+        if(!StringUtils.isNullOrEmpty(userid)){
+            id = Integer.parseInt(userid);
+        } else {
+            id = 0;
+        }
+
+        Map<String, String> map = new HashMap<>();
+        boolean flag = false;
+
+        if(id == 0){
+            map.put("delResult","notexist");
+        } else {
+            UserServiceImpl userService = new UserServiceImpl();
+            flag = userService.deleteUser(id);
+
+            if(flag){
+                map.put("delResult","true");
+            } else {
+                map.put("delResult","false");
+            }
+        }
+
+        try {
+            response.setContentType("application/json");
+            PrintWriter writer = response.getWriter();
+            writer.write(JSONArray.toJSONString(map));
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
 }

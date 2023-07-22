@@ -23,5 +23,7 @@ public interface UserDao {
     // Add user
     public int addUser(Connection connection, Users user) throws Exception;
 
+    // Delete user
+    public int deleteUser(Connection connection, int id) throws Exception;
 
  }

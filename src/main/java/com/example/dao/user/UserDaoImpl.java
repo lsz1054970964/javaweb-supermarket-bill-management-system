@@ -172,4 +172,23 @@ public class UserDaoImpl implements UserDao {
         BaseDao.close(null, preparedStatement, null);
         return execute;
     }
+
+    @Override
+    public int deleteUser(Connection connection, int id) throws Exception {
+
+        PreparedStatement preparedStatement = null;
+        int execute = 0;
+
+        if(connection != null){
+            String sql = "delete from `smbms_user` where userCode = ?";
+            Object[] params = {id};
+
+            execute = BaseDao.execute(connection, preparedStatement, sql, params);
+        }
+
+        BaseDao.close(null, preparedStatement, null);
+
+        return execute;
+    }
+
 }

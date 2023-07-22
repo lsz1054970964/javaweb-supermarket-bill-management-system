@@ -23,4 +23,7 @@ public interface UserService {
 
     // Check whether user exists or not
     public Users login(String userCode);
+
+    // Delete user
+    public boolean deleteUser(int id);
 }
