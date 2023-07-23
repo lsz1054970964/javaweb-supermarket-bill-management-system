@@ -1,28 +1,21 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Administrator
-  Date: 2021/2/26
-  Time: 21:25
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@include file="/jsp/common/head.jsp" %>
+<%@include file="/static/jsp/common/head.jsp" %>
 
 <div class="right">
     <div class="location">
-        <strong>你现在所在的位置是:</strong>
-        <span>订单管理页面</span>
+        <strong>Your current location:</strong>
+        <span>Bill management page</span>
     </div>
     <div class="search">
-        <form method="get" action="${pageContext.request.contextPath }/jsp/bill.do">
+        <form method="get" action="${pageContext.request.contextPath }/static/jsp/bill.do">
             <input name="method" value="query" class="input-text" type="hidden">
-            <span>商品名称：</span>
+            <span>product name：</span>
             <input name="queryProductName" type="text" value="${queryProductName }">
 
-            <span>供应商：</span>
+            <span>provider name：</span>
             <select name="queryProviderId">
                 <c:if test="${providerList != null }">
-                    <option value="0">--请选择--</option>
+                    <option value="0">--please select--</option>
                     <c:forEach var="provider" items="${providerList}">
                         <option
                                 <c:if test="${provider.id == queryProviderId }">selected="selected"</c:if>
@@ -31,27 +24,27 @@
                 </c:if>
             </select>
 
-            <span>是否付款：</span>
+            <span>Is paid：</span>
             <select name="queryIsPayment">
-                <option value="0">--请选择--</option>
-                <option value="1" ${queryIsPayment == 1 ? "selected=\"selected\"":"" }>未付款</option>
-                <option value="2" ${queryIsPayment == 2 ? "selected=\"selected\"":"" }>已付款</option>
+                <option value="0">--please select--</option>
+                <option value="1" ${queryIsPayment == 1 ? "selected=\"selected\"":"" }>not paid</option>
+                <option value="2" ${queryIsPayment == 2 ? "selected=\"selected\"":"" }>paid</option>
             </select>
 
-            <input value="查 询" type="submit" id="searchbutton">
-            <a href="${pageContext.request.contextPath }/jsp/billadd.jsp">添加订单</a>
+            <input value="query" type="submit" id="searchbutton">
+            <a href="${pageContext.request.contextPath }/static/jsp/billadd.jsp">add bill</a>
         </form>
     </div>
-    <!--账单表格 样式和供应商公用-->
+
     <table class="providerTable" cellpadding="0" cellspacing="0">
         <tr class="firstTr">
-            <th width="10%">订单编码</th>
-            <th width="20%">商品名称</th>
-            <th width="10%">供应商</th>
-            <th width="10%">订单金额</th>
-            <th width="10%">是否付款</th>
-            <th width="10%">创建时间</th>
-            <th width="30%">操作</th>
+            <th width="10%">bill code</th>
+            <th width="20%">product name</th>
+            <th width="10%">provider</th>
+            <th width="10%">bill accout</th>
+            <th width="10%">is paid</th>
+            <th width="10%">created date</th>
+            <th width="30%">action</th>
         </tr>
         <c:forEach var="bill" items="${billList }" varStatus="status">
             <tr>
@@ -69,8 +62,8 @@
                 </td>
                 <td>
 					<span>
-						<c:if test="${bill.isPayment == 1}">未付款</c:if>
-						<c:if test="${bill.isPayment == 2}">已付款</c:if>
+						<c:if test="${bill.isPayment == 1}">not paid</c:if>
+						<c:if test="${bill.isPayment == 2}">paid</c:if>
 					</span>
                 </td>
                 <td>
@@ -80,11 +73,11 @@
                 </td>
                 <td>
                     <span><a class="viewBill" href="javascript:;" billid=${bill.id } billcc=${bill.billCode }><img
-                            src="${pageContext.request.contextPath }/images/read.png" alt="查看" title="查看"/></a></span>
+                            src="${pageContext.request.contextPath }/static/images/read.png" alt="query" title="query"/></a></span>
                     <span><a class="modifyBill" href="javascript:;" billid=${bill.id } billcc=${bill.billCode }><img
-                            src="${pageContext.request.contextPath }/images/xiugai.png" alt="修改" title="修改"/></a></span>
+                            src="${pageContext.request.contextPath }/static/images/xiugai.png" alt="update" title="update"/></a></span>
                     <span><a class="deleteBill" href="javascript:;" billid=${bill.id } billcc=${bill.billCode }><img
-                            src="${pageContext.request.contextPath }/images/schu.png" alt="删除" title="删除"/></a></span>
+                            src="${pageContext.request.contextPath }/static/images/schu.png" alt="delete" title="delete"/></a></span>
                 </td>
             </tr>
         </c:forEach>
@@ -92,18 +85,18 @@
 </div>
 </section>
 
-<!--点击删除按钮后弹出的页面-->
+
 <div class="zhezhao"></div>
 <div class="remove" id="removeBi">
     <div class="removerChid">
-        <h2>提示</h2>
+        <h2>Reminder</h2>
         <div class="removeMain">
-            <p>你确定要删除该订单吗？</p>
-            <a href="#" id="yes">确定</a>
-            <a href="#" id="no">取消</a>
+            <p>Are you sure to delete this bill？</p>
+            <a href="#" id="yes">yes</a>
+            <a href="#" id="no">no</a>
         </div>
     </div>
 </div>
 
-<%@include file="/jsp/common/foot.jsp" %>
-<script type="text/javascript" src="${pageContext.request.contextPath }/js/billlist.js"></script>
+<%@include file="/static/jsp/common/foot.jsp" %>
+<script type="text/javascript" src="${pageContext.request.contextPath }/static/js/billlist.js"></script>

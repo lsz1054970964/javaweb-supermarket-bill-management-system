@@ -31,7 +31,7 @@
         <url-pattern>/static/js/logout.do</url-pattern>
     </servlet-mapping>
 
-    // Update
+    // Servlet
     <servlet>
         <servlet-name>user</servlet-name>
         <servlet-class>com.example.servlet.user.UserServlet</servlet-class>
@@ -40,7 +40,17 @@
         <servlet-name>user</servlet-name>
         <url-pattern>/static/jsp/user.do</url-pattern>
     </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>bill</servlet-name>
+        <servlet-class>com.example.servlet.bill.BillServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>bill</servlet-name>
+        <url-pattern>/static/jsp/bill.do</url-pattern>
+    </servlet-mapping>
 
+    // Filter
     <filter>
         <filter-name>loginFilter</filter-name>
         <filter-class>com.example.filter.LoginFilter</filter-class>
