@@ -8,4 +8,7 @@ import java.util.List;
 public interface BillDao {
     // Get bill list
     public List<Bills> getBillList(Connection connection, String productName, int providerId, int isPayment) throws Exception;
+
+    // Add bill
+    public int addBill(Connection connection, Bills bill) throws Exception;
 }

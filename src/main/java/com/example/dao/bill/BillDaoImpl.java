@@ -44,6 +44,9 @@ public class BillDaoImpl implements BillDao{
                 bill.setId(rs.getInt("id"));
                 bill.setBillCode(rs.getString("billCode"));
                 bill.setProductName(rs.getString("productName"));
+                bill.setProductDesc(rs.getString("productDesc"));
+                bill.setProductUnit(rs.getString("productUnit"));
+                bill.setProductCount(rs.getFloat("productCount"));
                 bill.setProviderName(rs.getString("providerName"));
                 bill.setTotalPrice(rs.getFloat("totalPrice"));
                 bill.setIsPayment(rs.getInt("isPayment"));
@@ -56,5 +59,27 @@ public class BillDaoImpl implements BillDao{
         BaseDao.close(null, preparedStatement, rs);
 
         return billList;
+    }
+
+    @Override
+    public int addBill(Connection connection, Bills bill) throws Exception {
+
+        PreparedStatement preparedStatement =  null;
+        int execute = 0;
+
+        if(connection != null){
+
+            String sql = "insert into `smbms_provider` (billCode, productName, productUnit, productCount, " +
+                    "totalPrice, isPayment, createdBy, creationDate, providerId) values (?, ?, ?, ?, ?, ?, ?, ?, ?) ";
+            Object[] params = {bill.getBillCode(), bill.getProductName(), bill.getProductUnit(), bill.getProductCount(),
+                    bill.getTotalPrice(), bill.getIsPayment(), bill.getCreatedBy(), bill.getCreationDate(),
+                    bill.getProviderId()};
+
+            execute = BaseDao.execute(connection, preparedStatement, sql, params);
+        }
+
+        BaseDao.close(null, preparedStatement, null);
+
+        return execute;
     }
 }

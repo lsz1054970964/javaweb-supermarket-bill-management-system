@@ -2,8 +2,10 @@ package com.example.servlet.bill;
 
 import com.example.pojo.Bills;
 import com.example.pojo.Providers;
+import com.example.pojo.Users;
 import com.example.service.bill.BillServiceImpl;
 import com.example.service.provider.ProviderServiceImpl;
+import com.example.util.Constant;
 import com.mysql.cj.util.StringUtils;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -11,6 +13,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.sql.Date;
 import java.util.List;
 
 public class BillServlet extends HttpServlet {
@@ -20,6 +23,8 @@ public class BillServlet extends HttpServlet {
 
         if(method.equals("query")){
             this.getBillList(req, resp);
+        } else if (method.equals("add")) {
+            this.addBill(req, resp);
         }
     }
 
@@ -57,6 +62,47 @@ public class BillServlet extends HttpServlet {
             throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public void addBill(HttpServletRequest req, HttpServletResponse resp){
+
+        String billCode = req.getParameter("billCode");
+        String productName = req.getParameter("productName");
+        String productUnit = req.getParameter("productUnit");
+        String productCount = req.getParameter("productCount");
+        String totalPrice = req.getParameter("totalPrice");
+        String providerId = req.getParameter("providerId");
+        String isPayment = req.getParameter("isPayment");
+
+        Bills bill = new Bills();
+        bill.setBillCode(billCode);
+        bill.setProviderName(productName);
+        bill.setProductUnit(productUnit);
+        bill.setProductCount(Float.parseFloat(productCount));
+        bill.setTotalPrice(Float.parseFloat(totalPrice));
+        bill.setProviderId(Integer.parseInt(providerId));
+        bill.setIsPayment(Integer.parseInt(isPayment));
+        bill.setCreatedBy(((Users) req.getSession().getAttribute(Constant.userSession)).getId());
+        bill.setCreationDate(new Date(System.currentTimeMillis()));
+
+        BillServiceImpl billService = new BillServiceImpl();
+        boolean flag = billService.addBill(bill);
+
+        if(flag){
+            try {
+                resp.sendRedirect(req.getContextPath()+"/static/jsp/bill.do?method=query");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            try {
+                req.getRequestDispatcher("billadd.jsp").forward(req,resp);
+            } catch (ServletException e) {
+                throw new RuntimeException(e);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 }

@@ -8,4 +8,7 @@ public interface BillService {
 
     // Get bill list
     public List<Bills> getBillList(String productName, int providerId, int isPayment);
+
+    // Add bill
+    public boolean addBill(Bills bill);
 }
