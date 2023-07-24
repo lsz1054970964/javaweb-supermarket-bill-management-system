@@ -108,4 +108,34 @@ public class BillServiceImpl implements BillService{
 
         return flag;
     }
+
+    @Override
+    public boolean modifyBill(Bills bill) {
+
+        Connection connection = null;
+        boolean flag = false;
+        int execute = 0;
+
+        try {
+            connection = BaseDao.getConnection();
+            connection.setAutoCommit(false);
+            execute = billDao.updateBill(connection, bill);
+            connection.commit();
+
+            if(execute > 0){
+                flag = true;
+            }
+        } catch (Exception e) {
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
+            throw new RuntimeException(e);
+        } finally {
+            BaseDao.close(connection, null, null);
+        }
+
+        return flag;
+    }
 }

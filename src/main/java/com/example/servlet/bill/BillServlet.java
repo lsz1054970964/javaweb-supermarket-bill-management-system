@@ -31,9 +31,13 @@ public class BillServlet extends HttpServlet {
         } else if (method.equals("add")) {
             this.addBill(req, resp);
         } else if (method.equals("view")){
-            this.getBill(req, resp);
+            this.getBill(req, resp, "billview.jsp");
         } else if (method.equals("delbill")) {
             this.deleteBill(req, resp);
+        } else if (method.equals("modifysave")) {
+            this.updateBill(req, resp);
+        } else if (method.equals("modify")){
+            this.getBill(req, resp, "billmodify.jsp");
         }
     }
 
@@ -115,7 +119,7 @@ public class BillServlet extends HttpServlet {
         }
     }
 
-    public void getBill(HttpServletRequest req, HttpServletResponse resp){
+    public void getBill(HttpServletRequest req, HttpServletResponse resp, String url){
         String billid = req.getParameter("billid");
         Bills bill = new Bills();
 
@@ -126,7 +130,7 @@ public class BillServlet extends HttpServlet {
             req.setAttribute("bill",bill);
 
             try {
-                req.getRequestDispatcher("billview.jsp").forward(req, resp);
+                req.getRequestDispatcher(url).forward(req, resp);
             } catch (ServletException e) {
                 throw new RuntimeException(e);
             } catch (IOException e) {
@@ -167,5 +171,44 @@ public class BillServlet extends HttpServlet {
             throw new RuntimeException(e);
         }
 
+    }
+
+    public void updateBill(HttpServletRequest req, HttpServletResponse resp){
+
+        String billid = req.getParameter("billid");
+
+        if(!StringUtils.isNullOrEmpty(billid)){
+            int id = Integer.parseInt(billid);
+            Bills bill = new Bills();
+            bill.setId(id);
+            bill.setBillCode(req.getParameter("billCode"));
+            bill.setProductName(req.getParameter("productName"));
+            bill.setProductUnit(req.getParameter("productUnit"));
+            bill.setProductCount(Float.parseFloat(req.getParameter("productCount")));
+            bill.setTotalPrice(Float.parseFloat(req.getParameter("totalPrice")));
+            bill.setProviderId(Integer.parseInt(req.getParameter("providerId")));
+            bill.setIsPayment(Integer.parseInt(req.getParameter("isPayment")));
+            bill.setModifyBy(((Users) req.getSession().getAttribute(Constant.userSession)).getId());
+            bill.setModifyDate(new Date(System.currentTimeMillis()));
+
+            BillServiceImpl billService = new BillServiceImpl();
+            boolean flag = billService.modifyBill(bill);
+
+            if(flag){
+                try {
+                    resp.sendRedirect(req.getContextPath()+"/static/jsp/bill.do?method=query");
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            } else {
+                try {
+                    req.getRequestDispatcher("billmodify.jsp").forward(req, resp);
+                } catch (ServletException e) {
+                    throw new RuntimeException(e);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
     }
 }

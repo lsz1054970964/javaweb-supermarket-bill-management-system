@@ -18,4 +18,7 @@ public interface BillService {
     // Delete bill by id
     public boolean deleteBill(int id);
 
+    // Update bill by id
+    public boolean modifyBill(Bills bill);
+
 }

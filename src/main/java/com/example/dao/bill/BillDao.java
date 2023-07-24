@@ -17,4 +17,7 @@ public interface BillDao {
 
     // Delete bill by id
     public int deleteBill(Connection connection, int id) throws Exception;
+
+    // Update bill by id
+    public int updateBill(Connection connection, Bills bill) throws Exception;
 }
