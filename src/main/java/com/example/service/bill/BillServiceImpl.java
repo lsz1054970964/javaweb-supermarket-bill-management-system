@@ -55,4 +55,22 @@ public class BillServiceImpl implements BillService{
 
         return flag;
     }
+
+    @Override
+    public Bills getBill(int id) {
+
+        Connection connection = null;
+        Bills bill = new Bills();
+
+        try {
+            connection = BaseDao.getConnection();
+            bill = billDao.getBill(connection, id);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            BaseDao.close(connection, null, null);
+        }
+
+        return bill;
+    }
 }

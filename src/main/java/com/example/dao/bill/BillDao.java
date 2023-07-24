@@ -11,4 +11,7 @@ public interface BillDao {
 
     // Add bill
     public int addBill(Connection connection, Bills bill) throws Exception;
+
+    // Get bill by id
+    public Bills getBill(Connection connection, int id) throws Exception;
 }

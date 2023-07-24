@@ -25,6 +25,8 @@ public class BillServlet extends HttpServlet {
             this.getBillList(req, resp);
         } else if (method.equals("add")) {
             this.addBill(req, resp);
+        } else if (method.equals("view")){
+            this.getBill(req, resp);
         }
     }
 
@@ -98,6 +100,26 @@ public class BillServlet extends HttpServlet {
         } else {
             try {
                 req.getRequestDispatcher("billadd.jsp").forward(req,resp);
+            } catch (ServletException e) {
+                throw new RuntimeException(e);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    public void getBill(HttpServletRequest req, HttpServletResponse resp){
+        String billid = req.getParameter("billid");
+        Bills bill = new Bills();
+
+        if(!StringUtils.isNullOrEmpty(billid)){
+            int id = Integer.parseInt(billid);
+            BillServiceImpl billService = new BillServiceImpl();
+            bill = billService.getBill(id);
+            req.setAttribute("bill",bill);
+
+            try {
+                req.getRequestDispatcher("billview.jsp").forward(req, resp);
             } catch (ServletException e) {
                 throw new RuntimeException(e);
             } catch (IOException e) {

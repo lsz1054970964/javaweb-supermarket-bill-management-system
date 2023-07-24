@@ -82,4 +82,33 @@ public class BillDaoImpl implements BillDao{
 
         return execute;
     }
+
+    @Override
+    public Bills getBill(Connection connection, int id) throws Exception {
+
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        Bills bill = new Bills();
+
+        if(connection != null){
+
+            String sql = "select * from `smbms_bill b join `smbms_provider` p where b.providerId = p.id and b.id = ?";
+            Object[] params = {id};
+
+            resultSet = BaseDao.execute(connection, preparedStatement, sql, params, resultSet);
+
+            if(resultSet.next()){
+                bill.setBillCode(resultSet.getString("billCode"));
+                bill.setProductName(resultSet.getString("productName"));
+                bill.setProductUnit(resultSet.getString("productUnit"));
+                bill.setProductCount(resultSet.getFloat("productCount"));
+                bill.setTotalPrice(resultSet.getFloat("totalPrice"));
+                bill.setProviderName(resultSet.getString("proName"));
+                bill.setIsPayment(resultSet.getInt("isPayment"));
+            }
+
+            BaseDao.close(null, preparedStatement, resultSet);
+        }
+        return bill;
+    }
 }
