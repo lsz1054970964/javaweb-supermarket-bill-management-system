@@ -12,6 +12,10 @@ public interface BillService {
     // Add bill
     public boolean addBill(Bills bill);
 
-    // Get bill
+    // Get bill by id
     public Bills getBill(int id);
+
+    // Delete bill by id
+    public boolean deleteBill(int id);
+
 }

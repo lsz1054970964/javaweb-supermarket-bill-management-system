@@ -1,5 +1,6 @@
 package com.example.servlet.bill;
 
+import com.alibaba.fastjson2.JSONArray;
 import com.example.pojo.Bills;
 import com.example.pojo.Providers;
 import com.example.pojo.Users;
@@ -7,14 +8,18 @@ import com.example.service.bill.BillServiceImpl;
 import com.example.service.provider.ProviderServiceImpl;
 import com.example.util.Constant;
 import com.mysql.cj.util.StringUtils;
+import com.mysql.cj.xdevapi.JsonArray;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class BillServlet extends HttpServlet {
     @Override
@@ -27,6 +32,8 @@ public class BillServlet extends HttpServlet {
             this.addBill(req, resp);
         } else if (method.equals("view")){
             this.getBill(req, resp);
+        } else if (method.equals("delbill")) {
+            this.deleteBill(req, resp);
         }
     }
 
@@ -126,5 +133,39 @@ public class BillServlet extends HttpServlet {
                 throw new RuntimeException(e);
             }
         }
+    }
+
+    public void deleteBill(HttpServletRequest req, HttpServletResponse resp){
+
+        String billid = req.getParameter("billid");
+        Map<String, String> map = new HashMap<>();
+
+        if(!StringUtils.isNullOrEmpty(billid)){
+
+            int id = Integer.parseInt(billid);
+            BillServiceImpl billService = new BillServiceImpl();
+            boolean flag = billService.deleteBill(id);
+
+            if(flag){
+                map.put("delResult", "true");
+            } else {
+                map.put("delResult", "false");
+            }
+
+        } else {
+            map.put("delResult", "noexist");
+        }
+
+
+        try {
+            resp.setContentType("application/json");
+            PrintWriter writer = resp.getWriter();
+            writer.write(JSONArray.toJSONString(map));
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }

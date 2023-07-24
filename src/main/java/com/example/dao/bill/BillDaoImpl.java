@@ -111,4 +111,22 @@ public class BillDaoImpl implements BillDao{
         }
         return bill;
     }
+
+    @Override
+    public int deleteBill(Connection connection, int id) throws Exception {
+
+        PreparedStatement preparedStatement = null;
+        int execute = 0;
+
+        if(connection != null){
+            String sql = "delete from `smbms_bill` where id = ?";
+            Object[] params = {id};
+
+            execute = BaseDao.execute(connection, preparedStatement, sql, params);
+        }
+
+        BaseDao.close(null, preparedStatement, null);
+
+        return execute;
+    }
 }
