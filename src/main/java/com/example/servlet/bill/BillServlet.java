@@ -17,6 +17,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,6 +39,8 @@ public class BillServlet extends HttpServlet {
             this.updateBill(req, resp);
         } else if (method.equals("modify")){
             this.getBill(req, resp, "billmodify.jsp");
+        } else if (method.equals("getproviderlist")) {
+            this.getProviderList(req, resp);
         }
     }
 
@@ -210,5 +213,23 @@ public class BillServlet extends HttpServlet {
                 }
             }
         }
+    }
+
+    public void getProviderList(HttpServletRequest req, HttpServletResponse resp){
+
+        List<Providers> providerList = new ArrayList<>();
+        ProviderServiceImpl providerService =  new ProviderServiceImpl();
+        providerList = providerService.getProviderList(null, null);
+
+        resp.setContentType("application/json");
+        try {
+            PrintWriter writer = resp.getWriter();
+            writer.write(JSONArray.toJSONString(providerList));
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }
