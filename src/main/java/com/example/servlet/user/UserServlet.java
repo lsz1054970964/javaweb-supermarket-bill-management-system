@@ -18,6 +18,7 @@ import org.junit.Test;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,14 +35,18 @@ public class UserServlet extends HttpServlet {
             this.checkUser(req,resp);
         } else if(method.equals("add")){
             this.addUser(req,resp);
-        } else if (method.equals("ucexist")) {
+        } else if(method.equals("ucexist")) {
             this.verifyUser(req, resp);
-        } else if (method.equals("deluser")){
+        } else if(method.equals("deluser")){
             this.deleteUser(req, resp);
-        } else if (method.equals("modifyexe")){
+        } else if(method.equals("modifyexe")){
             this.updateUser(req, resp);
-        } else if (method.equals("view")){
-            this.viewUser(req, resp);
+        } else if(method.equals("view")){
+            this.viewUser(req, resp, "userview.jsp");
+        } else if(method.equals("modify")){
+            this.viewUser(req, resp, "usermodify.jsp");
+        } else if(method.equals("getrolelist")){
+            this.getRoleList(req, resp);
         }
     }
 
@@ -345,7 +350,7 @@ public class UserServlet extends HttpServlet {
     }
 
     // View user
-    public void viewUser(HttpServletRequest request, HttpServletResponse response){
+    public void viewUser(HttpServletRequest request, HttpServletResponse response, String url){
 
         String uid = request.getParameter("uid");
 
@@ -358,7 +363,7 @@ public class UserServlet extends HttpServlet {
             request.setAttribute("user",user);
 
             try {
-                request.getRequestDispatcher("userview.jsp").forward(request, response);
+                request.getRequestDispatcher(url).forward(request, response);
             } catch (ServletException e) {
                 throw new RuntimeException(e);
             } catch (IOException e) {
@@ -366,5 +371,25 @@ public class UserServlet extends HttpServlet {
             }
 
         }
+    }
+
+    // Get role list
+    public void getRoleList(HttpServletRequest request, HttpServletResponse response){
+
+        List<Roles> roleList = new ArrayList<>();
+        RoleServiceImpl roleService = new RoleServiceImpl();
+        roleList = roleService.getRoleList();
+
+        response.setContentType("application/json");
+        PrintWriter writer = null;
+        try {
+            writer = response.getWriter();
+            writer.write(JSONArray.toJSONString(roleList));
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }
