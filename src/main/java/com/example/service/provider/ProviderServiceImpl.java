@@ -6,6 +6,7 @@ import com.example.dao.provider.ProviderDaoImpl;
 import com.example.pojo.Providers;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,4 +32,37 @@ public class ProviderServiceImpl implements ProviderService{
 
         return providerList;
     }
+
+    @Override
+    public boolean addProvider(Providers provider) {
+
+        Connection connection = null;
+        boolean flag = false;
+
+        try {
+
+            connection = BaseDao.getConnection();
+            connection.setAutoCommit(false);
+            int execute = providerDao.addProvider(connection, provider);
+            connection.commit();
+
+            if(execute > 0){
+                flag = true;
+            }
+        } catch (Exception e) {
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
+            throw new RuntimeException(e);
+        } finally {
+            BaseDao.close(connection, null, null);
+        }
+
+        return flag;
+    }
+
+
+
 }

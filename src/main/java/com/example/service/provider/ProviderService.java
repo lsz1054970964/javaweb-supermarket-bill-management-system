@@ -8,4 +8,7 @@ public interface ProviderService {
 
     // Get provider list
     public List<Providers> getProviderList(String proCode, String proName);
+
+    // Add provider
+    public boolean addProvider(Providers provider);
 }

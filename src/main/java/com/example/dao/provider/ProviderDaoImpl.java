@@ -55,4 +55,26 @@ public class ProviderDaoImpl implements ProviderDao{
 
         return providerList;
     }
+
+    @Override
+    public int addProvider(Connection connection, Providers provider) throws Exception {
+
+        PreparedStatement preparedStatement = null;
+        int execute = 0;
+
+        if(connection != null){
+
+            String sql = "insert into `smbms_provider` (proCode, proName, proContact, proPhone, proAddress," +
+                    "proFax, createdBy, creationDate, proDesc) values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            Object[] params = {provider.getProCode(), provider.getProName(), provider.getProContact(),
+            provider.getProPhone(), provider.getProAddress(), provider.getProFax(), provider.getCreatedBy(),
+            provider.getCreationDate(), provider.getProDesc()};
+
+            execute = BaseDao.execute(connection, preparedStatement, sql, params);
+        }
+
+        BaseDao.close(null, preparedStatement, null);
+
+        return execute;
+    }
 }

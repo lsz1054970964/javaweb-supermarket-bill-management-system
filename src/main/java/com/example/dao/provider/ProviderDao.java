@@ -9,4 +9,7 @@ public interface ProviderDao {
 
     // Get provider list
     public List<Providers> getProviderList(Connection connection, String proCode, String proName) throws Exception;
+
+    // Add provider
+    public int addProvider(Connection connection, Providers provider) throws Exception;
 }

@@ -50,6 +50,15 @@
         <url-pattern>/static/jsp/bill.do</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>provider</servlet-name>
+        <servlet-class>com.example.servlet.provider.ProviderServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>provider</servlet-name>
+        <url-pattern>/static/jsp/provider.do</url-pattern>
+    </servlet-mapping>
+
     // Filter
     <filter>
         <filter-name>loginFilter</filter-name>
