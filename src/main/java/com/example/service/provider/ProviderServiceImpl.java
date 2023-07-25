@@ -80,4 +80,32 @@ public class ProviderServiceImpl implements ProviderService{
 
         return provider;
     }
+
+    @Override
+    public boolean updateProvider(Providers provider) {
+
+        Connection connection = null;
+        boolean flag = false;
+
+        try {
+            connection = BaseDao.getConnection();
+            connection.setAutoCommit(false);
+            int execute = providerDao.updateProvider(connection, provider);
+
+            if(execute > 0){
+                flag = true;
+            }
+        } catch (Exception e) {
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
+            throw new RuntimeException(e);
+        } finally {
+            BaseDao.close(connection, null, null);
+        }
+
+        return flag;
+    }
 }

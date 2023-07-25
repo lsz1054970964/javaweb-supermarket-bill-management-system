@@ -15,4 +15,7 @@ public interface ProviderDao {
 
     // Get provider by id
     public Providers getProvider(Connection connection, int id) throws Exception;
+
+    // Update provider by id
+    public int updateProvider(Connection connection, Providers provider) throws Exception;
 }

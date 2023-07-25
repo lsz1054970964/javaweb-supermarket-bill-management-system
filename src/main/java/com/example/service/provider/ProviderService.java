@@ -14,4 +14,7 @@ public interface ProviderService {
 
     // Get provider by id
     public Providers getProvider(int id);
+
+    // Update provider by id
+    public boolean updateProvider(Providers provider);
 }

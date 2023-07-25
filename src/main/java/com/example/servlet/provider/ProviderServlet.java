@@ -27,6 +27,10 @@ public class ProviderServlet extends HttpServlet {
             this.addProvider(req, resp);
         } else if (method.equals("view")){
             this.getProvider(req, resp, "providerview.jsp");
+        } else if (method.equals("modifysave")) {
+            this.updateProvider(req, resp);
+        } else if (method.equals("modify")) {
+            this.getProvider(req, resp, "providermodify.jsp");
         }
     }
 
@@ -111,6 +115,52 @@ public class ProviderServlet extends HttpServlet {
 
             try {
                 req.getRequestDispatcher(url).forward(req, resp);
+            } catch (ServletException e) {
+                throw new RuntimeException(e);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+    }
+
+    public void updateProvider(HttpServletRequest req, HttpServletResponse resp){
+
+        String id = req.getParameter("id");
+        String proCode = req.getParameter("proCode");
+        String proName = req.getParameter("proName");
+        String proContact = req.getParameter("proContact");
+        String proPhone = req.getParameter("proPhone");
+        String proAddress = req.getParameter("proAddress");
+        String proFax = req.getParameter("proFax");
+        String proDesc = req.getParameter("proDesc");
+        int modifyBy = ((Users) req.getSession().getAttribute(Constant.userSession)).getId();
+        Date modifyDate = new Date(System.currentTimeMillis());
+
+        Providers provider = null;
+        provider.setId(Integer.parseInt(id));
+        provider.setProCode(proCode);
+        provider.setProName(proName);
+        provider.setProContact(proContact);
+        provider.setProPhone(proPhone);
+        provider.setProAddress(proAddress);
+        provider.setProFax(proFax);
+        provider.setProDesc(proDesc);
+        provider.setModifyBy(modifyBy);
+        provider.setModifyDate(modifyDate);
+
+        ProviderServiceImpl providerService = new ProviderServiceImpl();
+        boolean flag = providerService.updateProvider(provider);
+
+        if(flag){
+            try {
+                resp.sendRedirect(req.getContextPath()+"/static/jsp/provider.do?method=query");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            try {
+                req.getRequestDispatcher("providermodify.jsp").forward(req, resp);
             } catch (ServletException e) {
                 throw new RuntimeException(e);
             } catch (IOException e) {
