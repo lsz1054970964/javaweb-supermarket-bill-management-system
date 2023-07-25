@@ -4,6 +4,7 @@ import com.example.pojo.Providers;
 import com.example.pojo.Users;
 import com.example.service.provider.ProviderServiceImpl;
 import com.example.util.Constant;
+import com.mysql.cj.util.StringUtils;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,6 +25,8 @@ public class ProviderServlet extends HttpServlet {
             this.getProviderList(req, resp);
         } else if (method.equals("add")) {
             this.addProvider(req, resp);
+        } else if (method.equals("view")){
+            this.getProvider(req, resp, "providerview.jsp");
         }
     }
 
@@ -94,5 +97,26 @@ public class ProviderServlet extends HttpServlet {
         }
     }
 
-    
+    public void getProvider(HttpServletRequest req, HttpServletResponse resp, String url){
+
+        String proid = req.getParameter("proid");
+        if(!StringUtils.isNullOrEmpty(proid)){
+
+            int id = Integer.parseInt(proid);
+            ProviderServiceImpl providerService = new ProviderServiceImpl();
+            Providers provider = new Providers();
+            provider = providerService.getProvider(id);
+
+            req.setAttribute("provider", provider);
+
+            try {
+                req.getRequestDispatcher(url).forward(req, resp);
+            } catch (ServletException e) {
+                throw new RuntimeException(e);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+    }
 }

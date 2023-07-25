@@ -12,58 +12,52 @@ $(function(){
 	proPhone = $("#proPhone");
 	addBtn = $("#add");
 	backBtn = $("#back");
-	//初始化的时候，要把所有的提示信息变为：* 以提示必填项，更灵活，不要写在页面上
 	proCode.next().html("*");
 	proName.next().html("*");
 	proContact.next().html("*");
 	proPhone.next().html("*");
 	
-	/*
-	 * 验证
-	 * 失焦\获焦
-	 * jquery的方法传递
-	 */
+
 	proCode.on("blur",function(){
 		if(proCode.val() != null && proCode.val() != ""){
 			validateTip(proCode.next(),{"color":"green"},imgYes,true);
 		}else{
-			validateTip(proCode.next(),{"color":"red"},imgNo+" 编码不能为空，请重新输入",false);
+			validateTip(proCode.next(),{"color":"red"},imgNo+" invalid provider code, please input again",false);
 		}
 	}).on("focus",function(){
-		//显示友情提示
-		validateTip(proCode.next(),{"color":"#666666"},"* 请输入供应商编码",false);
+		validateTip(proCode.next(),{"color":"#666666"},"* please input provider code",false);
 	}).focus();
 	
 	proName.on("focus",function(){
-		validateTip(proName.next(),{"color":"#666666"},"* 请输入供应商名称",false);
+		validateTip(proName.next(),{"color":"#666666"},"* please input provider name",false);
 	}).on("blur",function(){
 		if(proName.val() != null && proName.val() != ""){
 			validateTip(proName.next(),{"color":"green"},imgYes,true);
 		}else{
-			validateTip(proName.next(),{"color":"red"},imgNo+" 供应商名称不能为空，请重新输入",false);
+			validateTip(proName.next(),{"color":"red"},imgNo+" invalid provider name, please input again",false);
 		}
 		
 	});
 	
 	proContact.on("focus",function(){
-		validateTip(proContact.next(),{"color":"#666666"},"* 请输入联系人",false);
+		validateTip(proContact.next(),{"color":"#666666"},"* please input contact",false);
 	}).on("blur",function(){
 		if(proContact.val() != null && proContact.val() != ""){
 			validateTip(proContact.next(),{"color":"green"},imgYes,true);
 		}else{
-			validateTip(proContact.next(),{"color":"red"},imgNo+" 联系人不能为空，请重新输入",false);
+			validateTip(proContact.next(),{"color":"red"},imgNo+" invalid contact, please input again",false);
 		}
 		
 	});
 	
 	proPhone.on("focus",function(){
-		validateTip(proPhone.next(),{"color":"#666666"},"* 请输入手机号",false);
+		validateTip(proPhone.next(),{"color":"#666666"},"* please input phone",false);
 	}).on("blur",function(){
 		var patrn=/^(13[0-9]|15[0-9]|18[0-9])\d{8}$/;
 		if(proPhone.val().match(patrn)){
 			validateTip(proPhone.next(),{"color":"green"},imgYes,true);
 		}else{
-			validateTip(proPhone.next(),{"color":"red"},imgNo + " 您输入的手机号格式不正确",false);
+			validateTip(proPhone.next(),{"color":"red"},imgNo + " invalid phone, please input again",false);
 		}
 	});
 	
@@ -77,7 +71,7 @@ $(function(){
 		}else if(proPhone.attr("validateStatus") != "true"){
 			proPhone.blur();
 		}else{
-			if(confirm("是否确认提交数据")){
+			if(confirm("Are you sure to submit?")){
 				$("#providerForm").submit();
 			}
 		}

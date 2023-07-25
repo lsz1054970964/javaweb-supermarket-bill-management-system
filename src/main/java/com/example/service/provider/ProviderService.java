@@ -11,4 +11,7 @@ public interface ProviderService {
 
     // Add provider
     public boolean addProvider(Providers provider);
+
+    // Get provider by id
+    public Providers getProvider(int id);
 }

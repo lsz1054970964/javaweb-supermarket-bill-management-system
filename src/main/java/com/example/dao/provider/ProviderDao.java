@@ -12,4 +12,7 @@ public interface ProviderDao {
 
     // Add provider
     public int addProvider(Connection connection, Providers provider) throws Exception;
+
+    // Get provider by id
+    public Providers getProvider(Connection connection, int id) throws Exception;
 }

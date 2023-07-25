@@ -63,6 +63,21 @@ public class ProviderServiceImpl implements ProviderService{
         return flag;
     }
 
+    @Override
+    public Providers getProvider(int id) {
 
+        Connection connection = null;
+        Providers provider = null;
 
+        try {
+            connection = BaseDao.getConnection();
+            provider = providerDao.getProvider(connection, id);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            BaseDao.close(connection, null, null);
+        }
+
+        return provider;
+    }
 }
