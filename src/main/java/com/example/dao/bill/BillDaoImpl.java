@@ -152,4 +152,25 @@ public class BillDaoImpl implements BillDao{
 
         return execute;
     }
+
+    @Override
+    public int countBill(Connection connection, int id) throws Exception {
+
+        PreparedStatement preparedStatement = null;
+        int cnt = 0;
+        ResultSet resultSet = null;
+
+        if(connection != null){
+
+            String sql = "select count(*) as cnt from `smbms_bill` where providerId = ?";
+            Object[] params = {id};
+            resultSet = BaseDao.execute(connection, preparedStatement, sql, params, resultSet);
+            cnt = resultSet.getInt("cnt");
+
+        }
+
+        BaseDao.close(null, preparedStatement, resultSet);
+
+        return cnt;
+    }
 }

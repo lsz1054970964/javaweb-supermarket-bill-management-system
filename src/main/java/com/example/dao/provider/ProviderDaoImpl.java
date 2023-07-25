@@ -129,4 +129,22 @@ public class ProviderDaoImpl implements ProviderDao{
 
         return execute;
     }
+
+    @Override
+    public int deleteProvider(Connection connection, int id) throws Exception {
+
+        PreparedStatement preparedStatement = null;
+        int execute = 0;
+
+        if(connection != null){
+
+            String sql = "delete from `smbms_provider` where id = ?";
+            Object[] params = {id};
+            execute = BaseDao.execute(connection, preparedStatement, sql, params);
+        }
+
+        BaseDao.close(null, preparedStatement, null);
+
+        return execute;
+    }
 }

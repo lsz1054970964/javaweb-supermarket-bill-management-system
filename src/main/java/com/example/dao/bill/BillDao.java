@@ -20,4 +20,7 @@ public interface BillDao {
 
     // Update bill by id
     public int updateBill(Connection connection, Bills bill) throws Exception;
+
+    // Count bill by provider id
+    public int countBill(Connection connection, int id) throws Exception;
 }

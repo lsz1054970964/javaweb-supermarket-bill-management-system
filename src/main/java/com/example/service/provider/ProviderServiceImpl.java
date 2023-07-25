@@ -1,6 +1,8 @@
 package com.example.service.provider;
 
 import com.example.dao.BaseDao;
+import com.example.dao.bill.BillDao;
+import com.example.dao.bill.BillDaoImpl;
 import com.example.dao.provider.ProviderDao;
 import com.example.dao.provider.ProviderDaoImpl;
 import com.example.pojo.Providers;
@@ -12,8 +14,12 @@ import java.util.List;
 
 public class ProviderServiceImpl implements ProviderService{
     private ProviderDao providerDao;
+    private BillDao billDao;
 
-    public ProviderServiceImpl(){providerDao = new ProviderDaoImpl();}
+    public ProviderServiceImpl(){
+        providerDao = new ProviderDaoImpl();
+        billDao = new BillDaoImpl();
+    }
 
     @Override
     public List<Providers> getProviderList(String proCode, String proName) {
@@ -98,6 +104,39 @@ public class ProviderServiceImpl implements ProviderService{
         } catch (Exception e) {
             try {
                 connection.rollback();
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
+            throw new RuntimeException(e);
+        } finally {
+            BaseDao.close(connection, null, null);
+        }
+
+        return flag;
+    }
+
+    @Override
+    public int deleteProvider(int id) {
+
+        Connection connection = null;
+        int flag = 2; // has orders connected, cannot delete
+
+        try {
+            connection = BaseDao.getConnection();
+            connection.setAutoCommit(false);
+            int cnt = billDao.countBill(connection, id);
+
+            if(cnt == 0){
+                // 1: has no order connected, delete succeeded
+                // 0: has no record matched
+                flag = providerDao.deleteProvider(connection, id);
+                connection.commit();
+
+            }
+        } catch (Exception e) {
+            try {
+                connection.rollback();
+                flag = -1; // has no order connected, delete failed or has no provider
             } catch (SQLException ex) {
                 throw new RuntimeException(ex);
             }

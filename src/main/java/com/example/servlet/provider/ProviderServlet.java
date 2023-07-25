@@ -1,5 +1,6 @@
 package com.example.servlet.provider;
 
+import com.alibaba.fastjson2.JSONArray;
 import com.example.pojo.Providers;
 import com.example.pojo.Users;
 import com.example.service.provider.ProviderServiceImpl;
@@ -11,9 +12,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ProviderServlet extends HttpServlet {
 
@@ -31,6 +35,8 @@ public class ProviderServlet extends HttpServlet {
             this.updateProvider(req, resp);
         } else if (method.equals("modify")) {
             this.getProvider(req, resp, "providermodify.jsp");
+        } else if (method.equals("delprovider")) {
+            this.deleteProvider(req, resp);
         }
     }
 
@@ -168,5 +174,39 @@ public class ProviderServlet extends HttpServlet {
             }
         }
 
+    }
+
+    public void deleteProvider(HttpServletRequest req, HttpServletResponse resp){
+
+        String proid = req.getParameter("proid");
+
+        if(!StringUtils.isNullOrEmpty(proid)){
+
+            int id = Integer.parseInt(proid);
+            ProviderServiceImpl providerService = new ProviderServiceImpl();
+            int flag = providerService.deleteProvider(id);
+            Map<String, String> map = new HashMap<>();
+
+            if(flag == 1){
+                map.put("delResult", "true");
+            } else if(flag == -1){
+                map.put("delResult","false");
+            } else if (flag == 0) {
+                map.put("delResult","notexist");
+            } else {
+                map.put("delResult","cannot");
+            }
+
+            try {
+                resp.setContentType("application/json");
+                PrintWriter writer = resp.getWriter();
+                writer.write(JSONArray.toJSONString(map));
+                writer.flush();
+                writer.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+        }
     }
 }

@@ -17,4 +17,7 @@ public interface ProviderService {
 
     // Update provider by id
     public boolean updateProvider(Providers provider);
+
+    // Delete provider by id
+    public int deleteProvider(int id);
 }

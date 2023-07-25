@@ -18,4 +18,8 @@ public interface ProviderDao {
 
     // Update provider by id
     public int updateProvider(Connection connection, Providers provider) throws Exception;
+
+    // Delete provider by id
+    public int deleteProvider(Connection connection, int id) throws Exception;
+
 }
