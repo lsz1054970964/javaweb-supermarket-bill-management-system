@@ -21,6 +21,7 @@ body {
 } */
 </style>
 <body>
+	<h1>There is something wrong...</h1>
 	<a href="../login.jsp">return to the login page</a>
 </body>
 </html>
